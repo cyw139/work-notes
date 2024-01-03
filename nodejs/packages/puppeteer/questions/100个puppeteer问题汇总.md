@@ -1,3 +1,7 @@
+# 100个puppeteer问题汇总
+## 1、代码运行后，浏览器没有运行起来
+### 1.1、代码
+```javascript
 import puppeteer from 'puppeteer';
 
 (async () => {
@@ -30,3 +34,10 @@ import puppeteer from 'puppeteer';
 
     await browser.close();
 })();
+```
+### 1.2、现象
+执行到 await puppeteer.launch 会卡住
+### 1.3、解决
+每个puppeteer 版本都对应一个浏览器版本。根据官网：
+[Chromium Support | Puppeteer (pptr.dev)](https://pptr.dev/chromium-support)
+电脑上的chrome 为低版本的就要安装对应版本的puppeteer。
