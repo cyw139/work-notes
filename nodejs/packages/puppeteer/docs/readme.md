@@ -91,3 +91,15 @@ import puppeteer from 'puppeteer';
   await browser.close();
 })();
 ```
+## 3、Default runtime settings
+### 3.1、Uses Headless mode
+- [ ] By default Puppeteer launches Chrome in [old Headless mode](https://developer.chrome.com/articles/new-headless/).
+```javascript
+const browser = await puppeteer.launch();
+// Equivalent to
+const browser = await puppeteer.launch({headless: true});
+```
+- [ ] [Chrome 112 launched a new Headless mode](https://developer.chrome.com/articles/new-headless/) that might cause some differences in behavior compared to the old Headless implementation. In the future Puppeteer will start defaulting to new implementation. We recommend you try it out before the switch:
+```javascript
+const browser = await puppeteer.launch({headless: 'new'});
+```

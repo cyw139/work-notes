@@ -41,3 +41,8 @@ import puppeteer from 'puppeteer';
 每个puppeteer 版本都对应一个浏览器版本。根据官网：
 [Chromium Support | Puppeteer (pptr.dev)](https://pptr.dev/chromium-support)
 电脑上的chrome 为低版本的就要安装对应版本的puppeteer。
+- [ ] [blog.csdn.net-旧版chrome](https://blog.csdn.net/cy5849203/article/details/130855429)
+- [ ] [win版-chrome](https://chromiumdash.appspot.com/releases?platform=Windows)
+- [ ] [chromium projects](https://www.chromium.org/getting-involved/download-chromium/)
+- [ ] [chromium 历史版本](https://github.com/vikyd/note/blob/master/chrome_offline_download.md#chrome-%E7%A6%BB%E7%BA%BF%E5%8C%85---%E5%8E%86%E5%8F%B2%E7%89%88%E6%9C%AC%E5%AE%98%E6%96%B9)
+- [ ] [知乎下载chrome老版本](https://zhuanlan.zhihu.com/p/339042765)
