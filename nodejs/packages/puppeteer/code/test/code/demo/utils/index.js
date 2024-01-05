@@ -266,29 +266,47 @@ const frame = {
          * @param expression - the XPath expression to evaluate.
          */
         { name: '$x', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
-        { name: 'workers', op: ['show']},
+        /**
+         * Adds a `<script>` tag into the page with the desired url or content.
+         *
+         * @param options - configure the script to add to the page.
+         *
+         * @returns a promise that resolves to the added tag when the script's
+         * `onload` event fires or when the script content was injected into the
+         * frame.
+         */
+        { name: 'addScriptTag', op: ['show']},
+        { name: 'addStyleTag', op: ['show']},
+        { name: 'childFrames', op: ['show']},
+        { name: 'click', op: ['show']},
+        { name: 'content', op: ['show']},
+        { name: 'evaluate', op: ['show']},
+        { name: 'evaluateHandle', op: ['show']},
+        { name: 'focus', op: ['show']},
+        { name: 'goto', op: ['show']},
+        { name: 'hover', op: ['show']},
+        { name: 'isDetached', op: ['show']},
+        { name: 'isOOPFrame', op: ['show']},
+        { name: 'locator', op: ['show']},
+        { name: 'name', op: ['show']},
+        { name: 'page', op: ['show']},
+        { name: 'parentFrame', op: ['show']},
+        { name: 'select', op: ['show']},
+        { name: 'setContent', op: ['show']},
+        { name: 'tap', op: ['show']},
+        { name: 'title', op: ['show']},
+        { name: 'type', op: ['show']},
+        { name: 'url', op: ['show']},
+        { name: 'waitForFunction', op: ['show']},
+        { name: 'waitForNavigation', op: ['show']},
+        { name: 'waitForSelector', op: ['show']},
+        { name: 'waitForTimeout', op: ['show']},
+        { name: 'waitForXPath', op: ['show']},
     ]
 }
 exports.my_puppeteer = {
     browser,
     browserContext,
     page,
+    frame,
 }

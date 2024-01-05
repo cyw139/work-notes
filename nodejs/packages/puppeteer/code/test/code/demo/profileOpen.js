@@ -33,8 +33,9 @@ async function main() {
             });
 
             // qq.com 首页截图
-            // site_qq_com.screenShotIndex(browser)
-            site_macat_vip.moveResourceToBaiduYunPan(browser)
+            // await site_qq_com.screenShotIndex(browser)
+            await site_qq_com.addScriptTagExample(browser)
+            // site_macat_vip.moveResourceToBaiduYunPan(browser)
 
             // await page.waitForTimeout(1000);
 

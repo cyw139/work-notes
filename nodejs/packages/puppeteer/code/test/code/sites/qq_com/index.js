@@ -10,6 +10,7 @@ exports.site_qq_com = {
         const options = {...defaultOptions, ..._options}
         const { selector, url } = options
         const page = await browser.newPage()
+
         await page.goto(url)
         await page.content()
         const daytimeString = dayjs().format('YYYY-MM-DD_HH_mm_ss')
@@ -33,5 +34,28 @@ exports.site_qq_com = {
             }
 
         }, 1000)
+    },
+    addScriptTagExample: async function( browser, _options = {}) {
+        const defaultOptions = {
+            url: 'https://www.qq.com/',
+            selector: '',
+        }
+        const options = {...defaultOptions, ..._options}
+        const { selector, url } = options
+        const page = await browser.newPage()
+
+        await page.goto(url)
+        await page.content()
+        // 三种方式：url、本地路径、内容
+        // 1、url
+
+        // 2、本地路径：位置3
+        const filePath = path.join(__dirname, './assets/scripts/test.js')
+        console.info(filePath)
+        await page.addScriptTag({ path: filePath })
+        // 3、内容：位置2
+        await page.addScriptTag({ content: "document.querySelector('.tit>a').innerHTML='直接js脚本'"})
+
+        //
     }
 }
