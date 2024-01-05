@@ -47,7 +47,7 @@ exports.site_qq_com = {
         await page.goto(url)
         await page.content()
         // 三种方式：url、本地路径、内容
-        // 1、url 跨越怎么解决？未实验
+        // 1、url
         await page.addScriptTag({type: 'module', url: 'https://client.crisp.chat/l.js' })
         // 2、本地路径：位置3
         const filePath = path.join(__dirname, './assets/scripts/test.js')
@@ -61,5 +61,27 @@ exports.site_qq_com = {
         // Sets the id of the script.
         // { type: 'module', id: 'module' }
 
-    }
+    },
+    addStyleTagExample: async function( browser, _options = {}) {
+        const defaultOptions = {
+            url: 'https://www.qq.com/',
+            selector: '',
+        }
+        const options = {...defaultOptions, ..._options}
+        const { selector, url } = options
+        const page = await browser.newPage()
+
+        await page.goto(url)
+        await page.content()
+        // 三种方式：url、本地路径、内容
+        // 1、url
+        await page.addStyleTag({ url: 'https://pptr.dev/assets/css/styles.c5c7e4fc.css' })
+        // 2、本地路径：位置3
+        const filePath = path.join(__dirname, './assets/styles/test.css')
+        console.info(filePath)
+        await page.addStyleTag({ path: filePath })
+        // 3、内容：位置2
+        await page.addStyleTag({ content: "h1.top-logo{ background-color: red;}"})
+
+    },
 }

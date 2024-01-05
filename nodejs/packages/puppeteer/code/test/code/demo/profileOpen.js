@@ -4,6 +4,7 @@ const {my_puppeteer} = require("./utils");
 const path = require('path')
 const {site_qq_com} = require("../sites/qq_com");
 const {site_macat_vip} = require("../sites/macat_vip");
+const {site_facebook_com} = require("../sites/facebook_com");
 // const fs = require('fs');
 // const dayjs = require('dayjs')
 // const logger = require('pino')()
@@ -12,7 +13,8 @@ async function main() {
     let logs = []
     const action = 'profile-open'
     const body = {
-        "profile_id": 3,
+        // "profile_id": 4191, // 外网
+        "profile_id": 4190, // 直连
         "args": [
             "--disable-extension-welcome-page"
         ],
@@ -34,8 +36,12 @@ async function main() {
 
             // qq.com 首页截图
             // await site_qq_com.screenShotIndex(browser)
-            await site_qq_com.addScriptTagExample(browser)
+            // 案例分析
+            // await site_qq_com.addScriptTagExample(browser)
+            await site_qq_com.addStyleTagExample(browser)
             // site_macat_vip.moveResourceToBaiduYunPan(browser)
+            // facebook注册
+            // await site_facebook_com.signup(browser)
 
             // await page.waitForTimeout(1000);
 
