@@ -47,8 +47,8 @@ exports.site_qq_com = {
         await page.goto(url)
         await page.content()
         // 三种方式：url、本地路径、内容
-        // 1、url
-
+        // 1、url 跨越怎么解决？未实验
+        await page.addScriptTag({type: 'module', url: 'https://client.crisp.chat/l.js' })
         // 2、本地路径：位置3
         const filePath = path.join(__dirname, './assets/scripts/test.js')
         console.info(filePath)
@@ -56,6 +56,10 @@ exports.site_qq_com = {
         // 3、内容：位置2
         await page.addScriptTag({ content: "document.querySelector('.tit>a').innerHTML='直接js脚本'"})
 
-        //
+        // 4、options 额外参数:
+        // Sets the type of the script. Use `module` in order to load an ES2015 module.
+        // Sets the id of the script.
+        // { type: 'module', id: 'module' }
+
     }
 }
