@@ -275,27 +275,96 @@ const frame = {
          * `onload` event fires or when the script content was injected into the
          * frame.
          */
-        { name: 'addScriptTag', op: ['show']},
-        { name: 'addStyleTag', op: ['show']},
+        { name: 'addScriptTag', op: []},
+        /**
+         * Adds a `<link rel="stylesheet">` tag into the page with the desired url or
+         * a `<style type="text/css">` tag with the content.
+         *
+         * @param options - configure the CSS to add to the page.
+         *
+         * @returns a promise that resolves to the added tag when the stylesheets's
+         * `onload` event fires or when the CSS content was injected into the
+         * frame.
+         */
+        { name: 'addStyleTag', op: []},
+        /**
+         * 就是页面的iframe的数量
+         * @returns an array of child frames.
+         */
         { name: 'childFrames', op: ['show']},
+        /**
+         *
+         * This method clicks the first element found that matches `selector`.
+         *
+         * @remarks
+         *
+         * This method scrolls the element into view if needed, and then uses
+         * {@link Page.mouse} to click in the center of the element. If there's no
+         * element matching `selector`, the method throws an error.
+         *
+         * Bear in mind that if `click()` triggers a navigation event and there's a
+         * separate `page.waitForNavigation()` promise to be resolved, you may end up
+         * with a race condition that yields unexpected results. The correct pattern
+         * for click and wait for navigation is the following:
+         *
+         * ```javascript
+         * const [response] = await Promise.all([
+         *   page.waitForNavigation(waitOptions),
+         *   frame.click(selector, clickOptions),
+         * ]);
+         * ```
+         * @param selector - the selector to search for to click. If there are
+         * multiple elements, the first will be clicked.
+         */
         { name: 'click', op: ['show']},
         { name: 'content', op: ['show']},
         { name: 'evaluate', op: ['show']},
         { name: 'evaluateHandle', op: ['show']},
         { name: 'focus', op: ['show']},
         { name: 'goto', op: ['show']},
-        { name: 'hover', op: ['show']},
+        /**
+         * This method fetches an element with `selector`, scrolls it into view if
+         * needed, and then uses {@link Page.mouse} to hover over the center of the
+         * element.
+         *
+         * @remarks
+         * If there's no element matching `selector`, the method throws an
+         *
+         * @param selector - the selector for the element to hover. If there are
+         * multiple elements, the first will be hovered.
+         */
+        { name: 'hover', op: []},
         { name: 'isDetached', op: ['show']},
         { name: 'isOOPFrame', op: ['show']},
         { name: 'locator', op: ['show']},
+        /**
+         * @remarks
+         *
+         * If the name is empty, it returns the `id` attribute instead.
+         *
+         * Note: This value is calculated once when the frame is created, and will not
+         * update if the attribute is changed later.
+         *
+         * @returns the frame's `name` attribute as specified in the tag.
+         */
         { name: 'name', op: ['show']},
-        { name: 'page', op: ['show']},
+        /* v5.5 版本没有这个属性 */
+        { name: 'page', op: []},
+        /**
+         * @returns the parent `Frame`, if any. Detached and main frames return `null`.
+         */
         { name: 'parentFrame', op: ['show']},
         { name: 'select', op: ['show']},
         { name: 'setContent', op: ['show']},
         { name: 'tap', op: ['show']},
+        /**
+         * @returns the frame's title.
+         */
         { name: 'title', op: ['show']},
         { name: 'type', op: ['show']},
+        /**
+         * @returns the frame's URL.
+         */
         { name: 'url', op: ['show']},
         { name: 'waitForFunction', op: ['show']},
         { name: 'waitForNavigation', op: ['show']},

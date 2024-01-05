@@ -38,7 +38,8 @@ async function main() {
             // await site_qq_com.screenShotIndex(browser)
             // 案例分析
             // await site_qq_com.addScriptTagExample(browser)
-            await site_qq_com.addStyleTagExample(browser)
+            // await site_qq_com.addStyleTagExample(browser)
+            await site_qq_com.showChildFramesOfFrameExample(browser)
             // site_macat_vip.moveResourceToBaiduYunPan(browser)
             // facebook注册
             // await site_facebook_com.signup(browser)
