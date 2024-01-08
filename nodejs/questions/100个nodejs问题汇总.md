@@ -1,4 +1,23 @@
 # 100个nodejs问题汇总
+## 5、[awesome-nodejs](https://github.com/sindresorhus/awesome-nodejs)
+## 4、[nest框架](https://docs.nestjs.cn/10/introduction)
+## 3、["Uncaught SyntaxError: Cannot use import statement outside a module" when importing ECMAScript 6](https://stackoverflow.com/questions/58211880/uncaught-syntaxerror-cannot-use-import-statement-outside-a-module-when-import)
+
+- [ ] 方案一
+  Add "type": "module" to your package.json file.
+- [ ] 方案二
+```html
+<html>
+<header>
+    <script type="module" src="whatever.js"></script>
+</header>
+<body></body>
+</html>
+
+```
+## 2、[require is not defined? Node.js [duplicate]](https://stackoverflow.com/questions/31931614/require-is-not-defined-node-js)
+
+Just remove "type":"module" from your package.json.
 ## 1、[Browser: Uncaught ReferenceError: require is not defined](https://stackoverflow.com/questions/19059580/browser-uncaught-referenceerror-require-is-not-defined)
 `stack overflow 最佳解答`
 
@@ -26,21 +45,3 @@ AMD implementations include:
 
 Note, in your search for choosing which one to go with, you'll read about Bower. Bower is only for package dependencies and is unopinionated on module definitions like CommonJS and AMD.
 
-## 2、[require is not defined? Node.js [duplicate]](https://stackoverflow.com/questions/31931614/require-is-not-defined-node-js)
-
-Just remove "type":"module" from your package.json.
-
-## 3、["Uncaught SyntaxError: Cannot use import statement outside a module" when importing ECMAScript 6](https://stackoverflow.com/questions/58211880/uncaught-syntaxerror-cannot-use-import-statement-outside-a-module-when-import)
-
-- [ ] 方案一
-Add "type": "module" to your package.json file.
-- [ ] 方案二
-```html
-<html>
-<header>
-    <script type="module" src="whatever.js"></script>
-</header>
-<body></body>
-</html>
-
-```

@@ -39,7 +39,7 @@ exports.site_www_facebook_com = {
         // await page.hover(home_selector)
         setTimeout(async function() {
             await page.click(home_selector)
-            // 2、获取Profile信息：Profile、Pilot、Studied、Live、From
+            // 2、采集Profile信息
         }, 3000)
 
     }
