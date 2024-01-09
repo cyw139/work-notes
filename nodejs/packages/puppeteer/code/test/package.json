@@ -17,7 +17,7 @@
     "consola": "^3.2.3",
     "dayjs": "^1.11.10",
     "node": "20.10.0",
-    "puppeteer-core": "20.8.3",
+    "puppeteer-core": "20.7.2",
     "pino": "^8.17.2"
   }
 }
