@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node code/demo/profileOpen.js",
     "td": ".\\node_modules\\.bin\\node .\\code\\demo\\profileOpen.js > .\\logs\\test.log",
-    "tfb": ".\\node_modules\\.bin\\node .\\code\\src\\facebook\\index.js > .\\logs\\facebook.log"
+    "tfb": ".\\node_modules\\.bin\\node --inspect-brk .\\code\\src\\facebook\\index.js > .\\logs\\facebook.log"
   },
   "keywords": [],
   "author": "",

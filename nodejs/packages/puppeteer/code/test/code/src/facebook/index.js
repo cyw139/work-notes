@@ -26,8 +26,8 @@ async function main() {
                 browserWSEndpoint: response_body.data.ws
             });
 
-            // await site_www_facebook_com.getProfile(browser)
-            await site_www_facebook_com.test(browser)
+            await site_www_facebook_com.getProfile(browser)
+            // await site_www_facebook_com.test(browser)
 
             // await browser.close();
         } catch (err) {

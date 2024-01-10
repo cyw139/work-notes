@@ -1,4 +1,15 @@
 # 100个puppeteer问题汇总
+## 7、[How do you click on an element with text in Puppeteer?](https://stackoverflow.com/questions/47407791/how-do-you-click-on-an-element-with-text-in-puppeteer)
+## 6、[如何确保页面完全加载，然后在scrape呢？](https://juejin.cn/post/6965000868030595103)
+```javascript
+await page.goto(url, { waitUntil: 'load' });
+await page.goto(url, { waitUntil: 'domcontentloaded' });
+await page.goto(url, { waitUntil: 'networkidle0' });
+await page.goto(url, { waitUntil: 'networkidle2' });
+
+```
+[puppeteer怎么等到某个元素出现在页面中才执行程序？](https://blog.csdn.net/m0_58201165/article/details/128804967)
+[stackoverflow 方案](https://stackoverflow.com/questions/52497252/puppeteer-wait-until-page-is-completely-loaded)
 ## 5、无法获取 iframe的解决办法
 - 问题描述：puppeteer 无法获取到指定的 iframe。
   使用 puppeteer 的 page 获取页面 iframe 的时候，有时候可能获取不到自己想要的iframe，但是页面中其他 iframe 能获取到。
