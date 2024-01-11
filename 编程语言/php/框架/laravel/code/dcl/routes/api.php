@@ -19,6 +19,14 @@ use Illuminate\Support\Facades\Route;
 
 
 $api = app('Dingo\Api\Routing\Router');
+$api->version('v1.1', [
+    'namespace' => '\App\Http\Controllers\Api',
+//    'middleware' => ['bindings', 'cors'],
+],function($api) {
+    $api->group(['prefix' => 'fb-auto'], function($api) {
+
+    });
+});
 
 $api->version('v1.1', [
     'namespace' => '\App\Http\Controllers\Api',
