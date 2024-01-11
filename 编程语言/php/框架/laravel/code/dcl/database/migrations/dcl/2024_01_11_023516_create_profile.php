@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateProfile extends Migration
 {
-    protected $table = 'courseware';
+    protected $table = 'profile';
     protected $model = null;
     protected function getModel()
     {
@@ -19,7 +19,7 @@ class CreateProfile extends Migration
      */
     public function up()
     {
-        $this->getModel()->create('profile', function (Blueprint $table) {
+        $this->getModel()->create($this->table, function (Blueprint $table) {
             $table->id();
             $table->integer('ixb_browser_id')->default(0)->comment('ixb_browser 打开ID');
             $table->bigInteger('fb_account_id')->default(0)->comment('fb账号ID');
@@ -42,6 +42,6 @@ class CreateProfile extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profile');
+        $this->getModel()->dropIfExists($this->table);
     }
 }
