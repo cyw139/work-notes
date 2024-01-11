@@ -78,7 +78,7 @@ exports.site_www_facebook_com = {
 
 
     },
-    getFieldInnerHTML: async function(page, selector) {
+    getFieldsInnerHTML: async function(page, selector) {
         const pageItems = await page.$$(selector)
         console.info('pageItems: ', pageItems)
         const results = []
@@ -103,8 +103,8 @@ exports.site_www_facebook_com = {
             fieldToInnerTexts = {}
         } = rule
         console.info('selector: ', selector_name, selector_value)
-        const pageItemNames = await this.getFieldInnerHTML(page, selector_name)
-        const pageItemValues = await this.getFieldInnerHTML(page, selector_value)
+        const pageItemNames = await this.getFieldsInnerHTML(page, selector_name)
+        const pageItemValues = await this.getFieldsInnerHTML(page, selector_value)
         if (pageItemValues.length !== pageItemNames.length) {
             console.info('异常[' + name + ']获取的字段记录数不同')
         }
@@ -115,6 +115,30 @@ exports.site_www_facebook_com = {
                 data[fieldToInnerTexts[itemName]] = pageItemValues[index]
             }
         })
+        console.info(data)
+        return data
+    },
+    getFieldInnerHTML: async function(page, selector) {
+        const pageItem = await page.$(selector)
+        console.info('pageItem: ', pageItem)
+        console.info('html: ', pageItem.toString())
+        const innerHTML = await page.evaluate(els => {
+            return els.innerHTML
+        }, pageItem)
+        const result = this.tools().clearAllHtmlTag(innerHTML)
+        console.info('result: ', result)
+        return result
+    },
+    getFieldInfo: async function(page, rule) {
+        const {
+            name = '',
+            fieldName = '',
+            selector = '',
+        } = rule
+        console.info('name: ', name)
+        console.info('selector: ', selector)
+        const pageItemValue = await this.getFieldInnerHTML(page, selector)
+        const data = { [fieldName]: pageItemValue}
         console.info(data)
         return data
     },
@@ -190,7 +214,7 @@ exports.site_www_facebook_com = {
                     ops: [
                         {
                             type: 'getFieldsInfo',
-                            name: 'contact_and_basic_info-fields',
+                            name: 'contact_and_basic_info-detail-01-fields',
                             fieldToInnerTexts: {
                                 'Mobile': 'mobile',
                                 'Email': 'email',
@@ -201,14 +225,63 @@ exports.site_www_facebook_com = {
                             selector_value: 'div[class="x9f619 x1n2onr6 x1ja2u2z x78zum5 x2lah0s x1nhvcw1 x1qjc9v5 xozqiw3 x1q0g3np xexx8yu xykv574 xbmpl8g x4cne27 xifccgj"] span[class="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x3x7a5m x6prxxf xvq8zen xo1l8bm xzsf02u x1yc453h"]',
                             selector_name: 'div[class="x9f619 x1n2onr6 x1ja2u2z x78zum5 x2lah0s x1nhvcw1 x1qjc9v5 xozqiw3 x1q0g3np xexx8yu xykv574 xbmpl8g x4cne27 xifccgj"] span[class="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1pg5gke xvq8zen xo1l8bm xi81zsa x1yc453h"]'
                         },
+                        {
+                            type: 'getFieldInfo',
+                            name: 'contact_and_basic_info-detail-02-fields',
+                            fieldName: 'categories',
+                            selector: 'div[class="xyamay9 xqmdsaz x1gan7if x1swvt13"] div[class="x9f619 x1n2onr6 x1ja2u2z x78zum5 x1nhvcw1 x1qjc9v5 xozqiw3 x1q0g3np xexx8yu xykv574 xbmpl8g x4cne27 xifccgj xs83m0k"] div[class="xzsf02u x6prxxf xvq8zen x126k92a"]'
+                        },
                     ],
                 },
                 {
                     type: 'pageClick',
-                    status: 'disabled',
+                    status: 'enable',
+                    name: 'about_place',
+                    selector: 'a[href$="sk=about_places"]',
+                    timeout: 3000,
+                    navigationOptions: { waitUntil: 'domcontentloaded' },
+                    ops: [
+                        {
+                            type: 'getFieldsInfo',
+                            name: 'place_lived-fields',
+                            fieldToInnerTexts: {
+                                'Current city': 'current_city',
+                                'Hometown': 'hometown',
+                            },
+                            selector_value: 'div[class="x9f619 x1n2onr6 x1ja2u2z x78zum5 x1nhvcw1 x1qjc9v5 xozqiw3 x1q0g3np xexx8yu xykv574 xbmpl8g x4cne27 xifccgj xs83m0k"] span[class="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x3x7a5m x6prxxf xvq8zen xo1l8bm xzsf02u"]',
+                            selector_name: 'div[class="x9f619 x1n2onr6 x1ja2u2z x78zum5 x1nhvcw1 x1qjc9v5 xozqiw3 x1q0g3np xexx8yu xykv574 xbmpl8g x4cne27 xifccgj xs83m0k"] span[class="xi81zsa x1nxh6w3 x1sibtaa"]'
+                        },
+                    ],
+                },
+                {
+                    type: 'pageClick',
+                    status: 'enable',
                     name: 'about_work_and_education',
                     selector: 'a[href$="sk=about_work_and_education"]',
                     timeout: 3000,
+                    navigationOptions: { waitUntil: 'domcontentloaded' },
+                    ops: [
+                        {
+                            type: 'getFieldsInfo',
+                            name: 'about_work_and_education-fields',
+                            fieldToInnerTexts: {
+                                'Work': 'work_company',
+                                'College': 'college',
+                                'High school': 'high_school',
+                            },
+                            selector_value: 'div[class="xyamay9 xqmdsaz x1gan7if x1swvt13"] span[class="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x3x7a5m x6prxxf xvq8zen xo1l8bm xzsf02u"]',
+                            selector_name: 'div[class="xyamay9 xqmdsaz x1gan7if x1swvt13"] span[class="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x676frb x1lkfr7t x1lbecb7 x1s688f xzsf02u"]'
+                        },
+                        {
+                            type: 'getFieldsInfo',
+                            name: 'about_work_and_education-work_city_or_town-fields',
+                            fieldToInnerTexts: {
+                                'Work': 'work_city_or_town',
+                            },
+                            selector_value: 'div[class="xyamay9 xqmdsaz x1gan7if x1swvt13"] span[class="xi81zsa x1nxh6w3 x1sibtaa"]',
+                            selector_name: 'div[class="xyamay9 xqmdsaz x1gan7if x1swvt13"] span[class="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x676frb x1lkfr7t x1lbecb7 x1s688f xzsf02u"]'
+                        },
+                    ],
                 },
             ]
         }
