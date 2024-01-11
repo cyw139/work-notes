@@ -126,6 +126,9 @@ exports.site_www_facebook_com = {
         const pageItem = await page.$(selector)
         const { clearAllHtmlTag, clearNBSP } = this.tools()
         console.info('pageItem: ', pageItem)
+        if (pageItem === null || pageItem === undefined || !pageItem) {
+            return ''
+        }
         console.info('html: ', pageItem.toString())
         const innerHTML = await page.evaluate(els => {
             return els.innerHTML

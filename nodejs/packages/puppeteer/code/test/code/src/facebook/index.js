@@ -6,7 +6,7 @@ async function main() {
     let logs = []
     const action = 'profile-open'
     const body = {
-        "profile_id": 521,
+        "profile_id": 520,
         "args": [
             "--disable-extension-welcome-page",
         ],
