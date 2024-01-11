@@ -5,7 +5,10 @@ exports.site_www_facebook_com = {
       return {
           clearAllHtmlTag: function(str){
             return str.replace(/<[^>]+>/g,"");
-        }
+          },
+          clearNBSP: function(str) {
+              return str.replace(/&nbsp;/g,"");
+          }
       }
     },
     done: async function(callback, intervalTime= 2000) {
@@ -81,6 +84,7 @@ exports.site_www_facebook_com = {
     getFieldsInnerHTML: async function(page, selector) {
         const pageItems = await page.$$(selector)
         console.info('pageItems: ', pageItems)
+        const { clearAllHtmlTag, clearNBSP } = this.tools()
         const results = []
         for(const index in pageItems) {
             const pageItem = pageItems[index]
@@ -89,7 +93,7 @@ exports.site_www_facebook_com = {
                 return els.innerHTML
             }, pageItem)
 
-            results.push(this.tools().clearAllHtmlTag(result))
+            results.push(clearNBSP(clearAllHtmlTag(result)))
             // results.push(result)
         }
         console.info('results: ', results)
@@ -120,12 +124,13 @@ exports.site_www_facebook_com = {
     },
     getFieldInnerHTML: async function(page, selector) {
         const pageItem = await page.$(selector)
+        const { clearAllHtmlTag, clearNBSP } = this.tools()
         console.info('pageItem: ', pageItem)
         console.info('html: ', pageItem.toString())
         const innerHTML = await page.evaluate(els => {
             return els.innerHTML
         }, pageItem)
-        const result = this.tools().clearAllHtmlTag(innerHTML)
+        const result = clearNBSP(clearAllHtmlTag(innerHTML))
         console.info('result: ', result)
         return result
     },
@@ -196,6 +201,13 @@ exports.site_www_facebook_com = {
                             options: { deltaY: 300 },
                             time: 1,
                         },
+                        {
+                            type: 'getFieldInfo',
+                            name: 'contact_and_basic_info-fb_account_name-field',
+                            fieldName: 'fb_account_name',
+                            selector: 'div[class="x9f619 x1n2onr6 x1ja2u2z x78zum5 xdt5ytf x2lah0s x193iq5w x1cy8zhl xexx8yu"] h1[class="x1heor9g x1qlqyl8 x1pd3egz x1a2a7pz"]'
+                        },
+
                     ]
                 },
                 {
