@@ -152,7 +152,7 @@ exports.site_www_facebook_com = {
             page.waitForNavigation(_navigationOptions),
             page.click(selector)
         ]);
-        await page.content()
+        // await page.content()
         console.info(page.url())
     },
     getProfile: async function( browser, _options = {}) {
@@ -198,8 +198,8 @@ exports.site_www_facebook_com = {
                                 'Birth date': 'birth_date',
                                 'Birth year': 'birth_year',
                             },
-                            selector_value: 'span[class="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x3x7a5m x6prxxf xvq8zen xo1l8bm xzsf02u x1yc453h"]',
-                            selector_name: 'span[class="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1pg5gke xvq8zen xo1l8bm xi81zsa x1yc453h"]'
+                            selector_value: 'div[class="x9f619 x1n2onr6 x1ja2u2z x78zum5 x2lah0s x1nhvcw1 x1qjc9v5 xozqiw3 x1q0g3np xexx8yu xykv574 xbmpl8g x4cne27 xifccgj"] span[class="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x3x7a5m x6prxxf xvq8zen xo1l8bm xzsf02u x1yc453h"]',
+                            selector_name: 'div[class="x9f619 x1n2onr6 x1ja2u2z x78zum5 x2lah0s x1nhvcw1 x1qjc9v5 xozqiw3 x1q0g3np xexx8yu xykv574 xbmpl8g x4cne27 xifccgj"] span[class="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1pg5gke xvq8zen xo1l8bm xi81zsa x1yc453h"]'
                         },
                     ],
                 },
@@ -233,11 +233,11 @@ exports.site_www_facebook_com = {
                         for(const ops_rule of rule.ops) {
                             await oThis.done(async function(resolve) {
                                 await oThis.pageDataOperate(page, ops_rule)
-                                resolve(true)
-                            }, 5000)
+                                await resolve(true)
+                            }, 3000)
                         }
                     }
-                    resolve(true)
+                    await resolve(true)
                 })
             }
 

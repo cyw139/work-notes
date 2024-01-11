@@ -63,6 +63,26 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+        'mysql_dcl_fb_auto' => [
+            'driver' => 'mysql',
+//            'timezone'  => env('DB_TIMEZONE','+08:00'),
+            'url' => env('DATABASE_URL'),
+            'host' => env('DCL_FB_AUTO_DB_HOST', '127.0.0.1'),
+            'port' => env('DCL_FB_AUTO_DB_PORT', '3306'),
+            'database' => env('DCL_FB_AUTO_DB_DATABASE', 'forge'),
+            'username' => env('DCL_FB_AUTO_DB_USERNAME', 'forge'),
+            'password' => env('DCL_FB_AUTO_DB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_general_ci',
+            'prefix' => env('DCL_FB_AUTO_DB_PREFIX', ''),
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
 
         'mysql_kspx' => [
             'driver' => 'mysql',
