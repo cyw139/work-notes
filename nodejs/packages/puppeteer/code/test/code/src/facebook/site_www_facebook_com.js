@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const {profileUpdate, profileClose, profileBatchClose} = require("../utils/ixb/profile");
 exports.site_www_facebook_com = {
     tools: function() {
       return {
@@ -29,8 +30,9 @@ exports.site_www_facebook_com = {
     },
     pageDataOperate: async function(page, rule) {
         const operationMethod = rule.type
+        let data = ''
         if (operationMethod in this && typeof this[operationMethod] === 'function') {
-            await this[operationMethod](page, rule)
+            return await this[operationMethod](page, rule)
         }
     },
     test: async function(browser) {
@@ -164,7 +166,7 @@ exports.site_www_facebook_com = {
             }
 
         }, 1000)
-
+        return {}
     },
     pageFocus: async function(page, rule) {
         const { name= '', selector = ''} = rule
@@ -187,7 +189,7 @@ exports.site_www_facebook_com = {
         // await page.content()
         console.info(page.url())
     },
-    getProfile: async function( ixb_profile_id, browser, _options = {}) {
+    getProfile: async function( browser, _options) {
         const defaultOptions = {
             url: 'https://www.facebook.com/',
             rules: [
@@ -307,7 +309,11 @@ exports.site_www_facebook_com = {
             ]
         }
         const options = {...defaultOptions, ..._options}
-        const { rules, url } = options
+        const { rules,
+            url,
+            profile_id,
+            group_id,
+            toggle_group_id } = options
         const pages = await browser.pages()
         const page = pages[0]
         await page.setViewport({
@@ -321,30 +327,41 @@ exports.site_www_facebook_com = {
         const isVisibleLoginButton = await page.$('div[class="_6ltg"] a[class="_42ft _4jy0 _6lti _4jy6 _4jy2 selected _51sy"]')
         console.info('isVisibleLoginButton: ', isVisibleLoginButton)
         if (isVisibleLoginButton) {
-            console.info(`[${ixb_profile_id}]未登录`)
+            console.info(`profile_id[${profile_id}]未登录`)
+            profileUpdate({ _body: {profile_id, group_id: toggle_group_id } }).then(resp => {
+                if (resp.error.code === 0) {
+                    profileBatchClose([profile_id]).then(resp => {
+                        console.info('profileBatchClose-success: ' + profile_id)
+                    }).catch(err => {
+                        console.info('profileBatchClose-failure: ' + profile_id)
+                    })
+                }
+            })
         } else {
-            await page.browser().close()
-        }
-
-        return
-        const oThis = this
-        for (let i = 0; i < rules.length; i++) {
-            const rule = rules[i]
-            if (rule.status === 'enable') {
-                await this.done(async function(resolve) {
-                    await oThis.pageOperate(page, rule)
-                    if ('ops' in rule && Array.isArray(rule.ops) && rule.ops.length > 0) {
-                        for(const ops_rule of rule.ops) {
-                            await oThis.done(async function(resolve) {
-                                await oThis.pageDataOperate(page, ops_rule)
-                                await resolve(true)
-                            }, 3000)
+            const oThis = this
+            let data = {ixb_profile_id: profile_id}
+            for (let i = 0; i < rules.length; i++) {
+                const rule = rules[i]
+                if (rule.status === 'enable') {
+                    await this.done(async function(resolve) {
+                        await oThis.pageOperate(page, rule)
+                        if ('ops' in rule && Array.isArray(rule.ops) && rule.ops.length > 0) {
+                            for(const ops_rule of rule.ops) {
+                                await oThis.done(async function(resolve) {
+                                    const filedData = await oThis.pageDataOperate(page, ops_rule)
+                                    data = {...data, ...filedData}
+                                    await resolve(true)
+                                }, 3000)
+                            }
                         }
-                    }
-                    await resolve(true)
-                })
-            }
+                        await resolve(true)
+                    })
+                }
 
+            }
+            console.info(`[${profile_id}]-getAllFieldsData: `, data)
         }
+
+        return data
     }
 }
