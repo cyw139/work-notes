@@ -21,7 +21,7 @@ class CreateProfile extends Migration
     {
         $this->getModel()->create($this->table, function (Blueprint $table) {
             $table->id();
-            $table->integer('ixb_browser_id')->default(0)->comment('ixb_browser 打开ID');
+            $table->integer('ixb_profile_id')->default(0)->comment('ixb_browser 打开ID');
             $table->bigInteger('fb_account_id')->default(0)->comment('fb账号ID');
             $table->string('fb_account_name', 50)->default('')->comment('fb账号名称');
             $table->string('mobile_area', 10)->default('')->comment('手机区号');

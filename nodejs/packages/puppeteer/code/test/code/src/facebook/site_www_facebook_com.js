@@ -187,7 +187,7 @@ exports.site_www_facebook_com = {
         // await page.content()
         console.info(page.url())
     },
-    getProfile: async function( browser, _options = {}) {
+    getProfile: async function( ixb_profile_id, browser, _options = {}) {
         const defaultOptions = {
             url: 'https://www.facebook.com/',
             rules: [
@@ -200,7 +200,13 @@ exports.site_www_facebook_com = {
                     ops: [
                         {
                             type: 'mouseMove',
-                            name: 'contact_and_basic_info-mouseMove',
+                            name: 'contact_and_basic_info-mouseMove-up',
+                            options: { deltaY: -300 },
+                            time: 1,
+                        },
+                        {
+                            type: 'mouseMove',
+                            name: 'contact_and_basic_info-mouseMove-down',
                             options: { deltaY: 300 },
                             time: 1,
                         },
@@ -311,6 +317,16 @@ exports.site_www_facebook_com = {
         })
 
         await page.goto(url, { waitUntil: 'domcontentloaded' })
+        //登录失效，出现登录
+        const isVisibleLoginButton = await page.$('div[class="_6ltg"] a[class="_42ft _4jy0 _6lti _4jy6 _4jy2 selected _51sy"]')
+        console.info('isVisibleLoginButton: ', isVisibleLoginButton)
+        if (isVisibleLoginButton) {
+            console.info(`[${ixb_profile_id}]未登录`)
+        } else {
+            await page.browser().close()
+        }
+
+        return
         const oThis = this
         for (let i = 0; i < rules.length; i++) {
             const rule = rules[i]
