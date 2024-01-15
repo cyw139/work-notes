@@ -4,6 +4,7 @@ const {profileList, profileOpen, profileBatchClose} = require("../utils/ixb/prof
 
 // FB分组ID[7282]-带广告de浏览器列表
 // 异常分组[7284]
+// @todo 首次打开失败，尝试N次重新加载
 profileList({
     _body: { group_id: 7282, limit: 5 },
 }).then(async function(resp){
@@ -12,7 +13,7 @@ profileList({
     const profile_ids = []
     for(const item of list) {
         profile_ids.push(item.profile_id)
-        if (item.profile_id !== 521) {
+        if (item.profile_id !== 520) {
             continue
         }
         const options = {

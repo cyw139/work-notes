@@ -208,36 +208,40 @@ exports.site_www_facebook_com = {
         const _navigationOptions = { ...defaultOptions, ...navigationOptions}
         console.info(name)
         console.info(page.url())
-        await page.waitForSelector(selector)
-        const pageItems = await page.$$(selector)
-        const fileNames = []
-        for(const index in pageItems) {
-            const pageItem = pageItems[index]
-            await Promise.all([
-                page.waitForNavigation(_navigationOptions),
-                pageItem.click(this)
-            ]);
-            await page.waitForSelector(photo_selector)
-            const imageHref = await page.evaluate((selector) => {
-                const element = document.querySelector(selector)
-                return element ? element.getAttribute('src') : ''
-            }, photo_selector)
-            console.log('imageHref: ', imageHref)
-            let fileName = imageHref.substring(0, imageHref.indexOf('?')).split('/').pop()
-            console.info('fileName: ', fileName)
-            console.info('downloading: ')
-            await downloadImage(imageHref,  site_config.base_download_image_path + fileName )
-            console.info('focus: ', photo_selector)
-            await page.focus(photo_selector)
-            console.info('Escape: ')
-            await page.keyboard.press('Escape')
-            fileNames.push(fileName)
+        console.log('selector: ', selector)
+        try {
+            await page.waitForSelector(selector)
+            const pageItems = await page.$$(selector)
+            const fileNames = []
+            for(const index in pageItems) {
+                const pageItem = pageItems[index]
+                await Promise.all([
+                    page.waitForNavigation(_navigationOptions),
+                    pageItem.click(this)
+                ]);
+                // @todo 不存在时，出现等待异常
+                console.log('photo_selector: ', photo_selector)
+                await page.waitForSelector(photo_selector)
+                const imageHref = await page.evaluate((selector) => {
+                    const element = document.querySelector(selector)
+                    return element ? element.getAttribute('src') : ''
+                }, photo_selector)
+                console.log('imageHref: ', imageHref)
+                let fileName = imageHref.substring(0, imageHref.indexOf('?')).split('/').pop()
+                console.info('fileName: ', fileName)
+                console.info('downloading: ')
+                await downloadImage(imageHref,  site_config.base_download_image_path + fileName )
+                console.info('focus: ', photo_selector)
+                await page.focus(photo_selector)
+                console.info('Escape: ')
+                await page.keyboard.press('Escape')
+                fileNames.push(fileName)
+            }
+            return { [fieldName]: fileNames.join(',')}
+        }catch( err) {
+            console.info('err: ', err.code, err.message)
+            return { [fieldName]: ''}
         }
-
-        return { [fieldName]: fileNames.join(',')}
-
-        // await page.content()
-        // console.info(page.url())
     },
     getProfile: async function( browser, _options) {
         const defaultOptions = {
