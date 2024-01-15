@@ -189,6 +189,22 @@ exports.site_www_facebook_com = {
         // await page.content()
         console.info(page.url())
     },
+    pageClickAndPhotosDownload: async function(page, rule) {
+        const { name= '', selector = '', photo_selector = '', navigationOptions = {}} = rule
+        const defaultOptions = {
+            waitUntil: 'networkidle0'
+        }
+        const _navigationOptions = { ...defaultOptions, ...navigationOptions}
+        console.info(name)
+        console.info(page.url())
+        await page.waitForSelector(selector)
+        await Promise.all([
+            page.waitForNavigation(_navigationOptions),
+            page.click(selector)
+        ]);
+        // await page.content()
+        console.info(page.url())
+    },
     getProfile: async function( browser, _options) {
         const defaultOptions = {
             url: 'https://www.facebook.com/',
@@ -304,6 +320,27 @@ exports.site_www_facebook_com = {
                             selector_value: 'div[class="xyamay9 xqmdsaz x1gan7if x1swvt13"] span[class="xi81zsa x1nxh6w3 x1sibtaa"]',
                             selector_name: 'div[class="xyamay9 xqmdsaz x1gan7if x1swvt13"] span[class="x193iq5w xeuugli x13faqbe x1vvkbs x1xmvt09 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x xudqn12 x676frb x1lkfr7t x1lbecb7 x1s688f xzsf02u"]'
                         },
+                    ],
+                },
+                {
+                    type: 'pageClick',
+                    status: 'enable',
+                    name: 'your_photos',
+                    selector: 'a[href$="sk=photos"]',
+                    timeout: 3000,
+                    navigationOptions: { waitUntil: 'domcontentloaded' },
+                    ops: [
+                        {
+                            type: 'pageClickAndPhotosDownload',
+                            status: 'enable',
+                            name: 'your_photos-download',
+                            selector: 'div[class="x1e56ztr"] a[href*="photo.php"]',
+                            photo_selector: 'div[class="x6s0dn4 x78zum5 xdt5ytf xl56j7k x1n2onr6"] > img',
+                            timeout: 3000,
+                            navigationOptions: { waitUntil: 'domcontentloaded' },
+                        },
+
+
                     ],
                 },
             ]
