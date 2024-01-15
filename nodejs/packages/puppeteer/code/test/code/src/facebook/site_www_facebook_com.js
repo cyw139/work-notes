@@ -1,6 +1,11 @@
 const path = require("path");
 const fs = require("fs");
 const {profileUpdate, profileClose, profileBatchClose} = require("../utils/ixb/profile");
+const {downloadImage} = require("../utils");
+const {base_download_path} = require("../config");
+const site_config = {
+    base_download_image_path: base_download_path + '/sites/www_facebook_com/images/',
+}
 exports.site_www_facebook_com = {
     tools: function() {
       return {
@@ -190,7 +195,13 @@ exports.site_www_facebook_com = {
         console.info(page.url())
     },
     pageClickAndPhotosDownload: async function(page, rule) {
-        const { name= '', selector = '', photo_selector = '', navigationOptions = {}} = rule
+        const {
+            name= '',
+            selector = '',
+            fieldName = '',
+            photo_selector = '',
+            navigationOptions = {}
+        } = rule
         const defaultOptions = {
             waitUntil: 'networkidle0'
         }
@@ -198,12 +209,35 @@ exports.site_www_facebook_com = {
         console.info(name)
         console.info(page.url())
         await page.waitForSelector(selector)
-        await Promise.all([
-            page.waitForNavigation(_navigationOptions),
-            page.click(selector)
-        ]);
+        const pageItems = await page.$$(selector)
+        const fileNames = []
+        for(const index in pageItems) {
+            const pageItem = pageItems[index]
+            await Promise.all([
+                page.waitForNavigation(_navigationOptions),
+                pageItem.click(this)
+            ]);
+            await page.waitForSelector(photo_selector)
+            const imageHref = await page.evaluate((selector) => {
+                const element = document.querySelector(selector)
+                return element ? element.getAttribute('src') : ''
+            }, photo_selector)
+            console.log('imageHref: ', imageHref)
+            let fileName = imageHref.substring(0, imageHref.indexOf('?')).split('/').pop()
+            console.info('fileName: ', fileName)
+            console.info('downloading: ')
+            await downloadImage(imageHref,  site_config.base_download_image_path + fileName )
+            console.info('focus: ', photo_selector)
+            await page.focus(photo_selector)
+            console.info('Escape: ')
+            await page.keyboard.press('Escape')
+            fileNames.push(fileName)
+        }
+
+        return { [fieldName]: fileNames.join(',')}
+
         // await page.content()
-        console.info(page.url())
+        // console.info(page.url())
     },
     getProfile: async function( browser, _options) {
         const defaultOptions = {
@@ -333,6 +367,7 @@ exports.site_www_facebook_com = {
                         {
                             type: 'pageClickAndPhotosDownload',
                             status: 'enable',
+                            fieldName: 'your_photos',
                             name: 'your_photos-download',
                             selector: 'div[class="x1e56ztr"] a[href*="photo.php"]',
                             photo_selector: 'div[class="x6s0dn4 x78zum5 xdt5ytf xl56j7k x1n2onr6"] > img',
@@ -363,6 +398,7 @@ exports.site_www_facebook_com = {
         //登录失效，出现登录
         const isVisibleLoginButton = await page.$('div[class="_6ltg"] a[class="_42ft _4jy0 _6lti _4jy6 _4jy2 selected _51sy"]')
         console.info('isVisibleLoginButton: ', isVisibleLoginButton)
+        let data = {ixb_profile_id: profile_id}
         if (isVisibleLoginButton) {
             console.info(`profile_id[${profile_id}]未登录`)
             profileUpdate({ _body: {profile_id, group_id: toggle_group_id } }).then(resp => {
@@ -376,7 +412,6 @@ exports.site_www_facebook_com = {
             })
         } else {
             const oThis = this
-            let data = {ixb_profile_id: profile_id}
             for (let i = 0; i < rules.length; i++) {
                 const rule = rules[i]
                 if (rule.status === 'enable') {

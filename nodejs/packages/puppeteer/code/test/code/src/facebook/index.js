@@ -1,14 +1,7 @@
 const {site_www_facebook_com} = require("./site_www_facebook_com");
 const {profileList, profileOpen, profileBatchClose} = require("../utils/ixb/profile");
-let promise = new Promise(function(resolve, reject) {
-    console.log('Promise')
-    resolve()
-})
-promise.then(resp => {
-    console.log('resolved.')
-})
-console.log('Hi!')
-/*
+
+
 // FB分组ID[7282]-带广告de浏览器列表
 // 异常分组[7284]
 profileList({
@@ -19,9 +12,9 @@ profileList({
     const profile_ids = []
     for(const item of list) {
         profile_ids.push(item.profile_id)
-        // if (item.profile_id !== 521) {
-        //     continue
-        // }
+        if (item.profile_id !== 521) {
+            continue
+        }
         const options = {
             _body: {
                 profile_id: item.profile_id
@@ -46,4 +39,3 @@ profileList({
     console.info(profile_ids)
     // await profileBatchClose(profile_ids)
 })
-*/
