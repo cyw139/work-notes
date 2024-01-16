@@ -219,7 +219,6 @@ exports.site_www_facebook_com = {
                     page.waitForNavigation(_navigationOptions),
                     pageItem.click(this)
                 ]);
-                // @todo 不存在时，出现等待异常
                 console.log('photo_selector: ', photo_selector)
                 await page.waitForSelector(photo_selector)
                 const imageHref = await page.evaluate((selector) => {
@@ -229,8 +228,7 @@ exports.site_www_facebook_com = {
                 console.log('imageHref: ', imageHref)
                 let fileName = imageHref.substring(0, imageHref.indexOf('?')).split('/').pop()
                 console.info('fileName: ', fileName)
-                console.info('downloading: ')
-                await downloadImage(imageHref,  site_config.base_download_image_path + fileName )
+                await downloadImage(page, imageHref,  site_config.base_download_image_path + fileName )
                 console.info('focus: ', photo_selector)
                 await page.focus(photo_selector)
                 console.info('Escape: ')
@@ -239,6 +237,7 @@ exports.site_www_facebook_com = {
             }
             return { [fieldName]: fileNames.join(',')}
         }catch( err) {
+            // 情况一：selector 选择器不存在时，出现等待异常
             console.info('err: ', err.code, err.message)
             return { [fieldName]: ''}
         }
@@ -278,12 +277,12 @@ exports.site_www_facebook_com = {
                 {
                     type: 'pageClick',
                     name: 'about_overview',
-                    status: 'enable',
+                    status: 'disabled',
                     selector: 'a[href$="sk=about"]',
                     timeout: 3000,
                 },
                 {   type: 'pageClick',
-                    status: 'enable',
+                    status: 'disabled',
                     name: 'about_contact_and_basic_info',
                     selector: 'a[href$="sk=about_contact_and_basic_info"]',
                     timeout: 3000,
@@ -312,7 +311,7 @@ exports.site_www_facebook_com = {
                 },
                 {
                     type: 'pageClick',
-                    status: 'enable',
+                    status: 'disabled',
                     name: 'about_place',
                     selector: 'a[href$="sk=about_places"]',
                     timeout: 3000,
@@ -332,7 +331,7 @@ exports.site_www_facebook_com = {
                 },
                 {
                     type: 'pageClick',
-                    status: 'enable',
+                    status: 'disabled',
                     name: 'about_work_and_education',
                     selector: 'a[href$="sk=about_work_and_education"]',
                     timeout: 3000,
@@ -437,6 +436,8 @@ exports.site_www_facebook_com = {
             }
             console.info(`[${profile_id}]-getAllFieldsData: `, data)
         }
+
+        // @todo 写入indexedDB
 
         return data
     }

@@ -13,7 +13,7 @@ profileList({
     const profile_ids = []
     for(const item of list) {
         profile_ids.push(item.profile_id)
-        if (item.profile_id !== 520) {
+        if (item.profile_id !== 501) {
             continue
         }
         const options = {
