@@ -6,14 +6,18 @@ const {profileList, profileOpen, profileBatchClose} = require("../utils/ixb/prof
 // 异常分组[7284]
 // @todo 首次打开失败，尝试N次重新加载
 profileList({
-    _body: { group_id: 7282, limit: 5 },
+    _body: { group_id: 7282, limit: 100 },
 }).then(async function(resp){
     const {total, data: list} = resp.data
     console.info(total, list)
     const profile_ids = []
-    for(const item of list) {
+    for(const index in  list) {
+        const item = list[index]
         profile_ids.push(item.profile_id)
-        if (item.profile_id !== 501) {
+        // if (item.profile_id > 492) {
+        //     continue
+        // }
+        if (![515].some(id => id === item.profile_id)) {
             continue
         }
         const options = {

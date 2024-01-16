@@ -1,4 +1,5 @@
 # 100个puppeteer问题汇总
+## 8、[How can I download images on a page using puppeteer?](https://stackoverflow.com/questions/52542149/how-can-i-download-images-on-a-page-using-puppeteer)
 ## 7、[How do you click on an element with text in Puppeteer?](https://stackoverflow.com/questions/47407791/how-do-you-click-on-an-element-with-text-in-puppeteer)
 ## 6、[如何确保页面完全加载，然后在scrape呢？](https://juejin.cn/post/6965000868030595103)
 ```javascript

@@ -7,40 +7,38 @@ exports.profileOpen = async function profileOpen(callback, {
     profile_id,
     group_id,
 }) {
-    const action = 'profile-open'
-    const body = {...{
-        "profile_id": 0, // 直连
-        "args": [
-            "--disable-extension-welcome-page"
-        ],
-        "load_extensions": false,
-        "load_profile_info_page": false,
-        "cookies_backup": false,
-        "cookie": ""
-    }, ..._body}
+    return new Promise(async (resolve, reject) => {
+        const action = 'profile-open'
+        const body = {...{
+                "profile_id": 0, // 直连
+                "args": [
+                    "--disable-extension-welcome-page"
+                ],
+                "load_extensions": false,
+                "load_profile_info_page": false,
+                "cookies_backup": false,
+                "cookie": ""
+            }, ..._body}
 
-    try {
-        const response_body = await ixbRequest(action, body);
-        console.info(response_body)
-
-        /**your business code**/
         try {
+            const response_body = await ixbRequest(action, body);
+            console.info(response_body)
+
             const browser = await puppeteer.connect({
                 browserWSEndpoint: response_body.data.ws
             });
 
-            callback(browser, { group_id, toggle_group_id, profile_id})
+            await callback(browser, { group_id, toggle_group_id, profile_id})
+            await browser.close()
+            resolve(true)
 
-        } catch (err) {
-            console.log(err.message);
+        } catch (error) {
+            // console.error(error.code);
+            // console.error(error.message);
+            console.error('profileOpen: ', `[${error.code}]`, error.message);
+            reject(false)
         }
-        /** end **/
-
-    } catch (error) {
-        // console.error(error.code);
-        // console.error(error.message);
-        console.error('profileOpen: ', `[${error.code}]`, error.message);
-    }
+    })
 }
 
 exports.profileList = async function({ _body = {} }) {
