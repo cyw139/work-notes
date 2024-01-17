@@ -37,7 +37,7 @@ class CreateProfile extends Migration
             $table->string('work_city_or_town', 100)->default('')->comment('工作所在城市或乡村');
             $table->string('work_company', 100)->default('')->comment('就职企业');
             $table->string('your_photos_filename', 100)->default('')->comment('your_photos：已下载的图片名');
-            $table->text('your_photos_original_url')->default('')->comment('your_photos：原始图片地址');
+            $table->text('your_photos_original_url')->default(null)->comment('your_photos：原始图片地址');
             $table->timestamps();
             $table->softDeletes();
         });

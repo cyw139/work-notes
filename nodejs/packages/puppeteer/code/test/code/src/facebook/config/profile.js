@@ -33,13 +33,13 @@ exports.profile_default_config = {
         {
             type: 'pageClick',
             name: 'about_overview',
-            status: 'disabled',
+            status: 'enable',
             selector: 'a[href$="sk=about"]',
             timeout: 3000,
             navigationOptions: { waitUntil: 'domcontentloaded' },
         },
         {   type: 'pageClick',
-            status: 'disabled',
+            status: 'enable',
             name: 'about_contact_and_basic_info',
             selector: 'a[href$="sk=about_contact_and_basic_info"]',
             timeout: 3000,
@@ -68,7 +68,7 @@ exports.profile_default_config = {
         },
         {
             type: 'pageClick',
-            status: 'disabled',
+            status: 'enable',
             name: 'about_place',
             selector: 'a[href$="sk=about_places"]',
             timeout: 3000,
@@ -88,7 +88,7 @@ exports.profile_default_config = {
         },
         {
             type: 'pageClick',
-            status: 'disabled',
+            status: 'enable',
             name: 'about_work_and_education',
             selector: 'a[href$="sk=about_work_and_education"]',
             timeout: 3000,
