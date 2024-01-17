@@ -7,6 +7,7 @@ exports.profile_default_config = {
             status: 'enable',
             selector: 'li a[href*="https://www.facebook.com/profile.php?id="]',
             timeout: 3000,
+            navigationOptions: { waitUntil: 'domcontentloaded' },
             ops: [
                 {
                     type: 'mouseMove',
@@ -35,6 +36,7 @@ exports.profile_default_config = {
             status: 'disabled',
             selector: 'a[href$="sk=about"]',
             timeout: 3000,
+            navigationOptions: { waitUntil: 'domcontentloaded' },
         },
         {   type: 'pageClick',
             status: 'disabled',
