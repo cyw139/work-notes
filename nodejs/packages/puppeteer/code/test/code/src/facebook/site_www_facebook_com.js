@@ -282,6 +282,21 @@ exports.site_www_facebook_com = {
             }
         })
     },
+    getUrlFieldInfo: function(page, rule) {
+        const {
+            name= '',
+            regRule = '',
+            regPosition = '',
+            fieldName = '',
+        } = rule
+        console.info(name)
+        const url = page.url()
+        const regResult = regRule.exec(url)
+
+        const result =  regResult === null || (!regResult[regPosition]) ? '' :regResult[regPosition]
+        console.info({ [fieldName]: result})
+        return { [fieldName]: result}
+    },
     getProfile: function( browser, _options) {
         return new Promise(async (resolve, reject) => {
             const options = {...profile_default_config, ..._options}

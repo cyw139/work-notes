@@ -10,6 +10,13 @@ exports.profile_default_config = {
             navigationOptions: { waitUntil: 'domcontentloaded' },
             ops: [
                 {
+                    type: 'getUrlFieldInfo',
+                    name: 'contact_and_basic_info-fb_account_id-field',
+                    fieldName: 'fb_account_id',
+                    regRule: /profile.php\?id=(\d+)/,
+                    regPosition: 1
+                },
+                {
                     type: 'mouseMove',
                     name: 'contact_and_basic_info-mouseMove-up',
                     options: { deltaY: -300 },
