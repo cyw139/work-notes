@@ -298,73 +298,80 @@ exports.site_www_facebook_com = {
         return { [fieldName]: result}
     },
     getProfile: function( browser, _options) {
-        return new Promise(async (resolve, reject) => {
-            const options = {...profile_default_config, ..._options}
-            const { rules,
-                url,
-                profile_id,
-                group_id,
-                toggle_group_id } = options
-            // const pages = await browser.pages()
-            // page = pages[0]
-            // for(const index in pages) {
-            //     const p = pages[index]
-            //     await p.close()
-            // }
-            const page = await browser.newPage()
-            await page.setViewport( {
-                width: 1200,
-                height: 800,
-                deviceScaleFactor: 3,
-            })
-            // @todo 失败的话，需要再尝试一次
-            await page.goto(url, { waitUntil: 'domcontentloaded' })
-            //登录失效，出现登录
-            const isVisibleLoginButton = await page.$('div[class="_6ltg"] a[class="_42ft _4jy0 _6lti _4jy6 _4jy2 selected _51sy"]')
-            console.info('isVisibleLoginButton: ', isVisibleLoginButton)
-            let data = {ixb_profile_id: profile_id}
-            if (isVisibleLoginButton) {
-                console.info(`profile_id[${profile_id}]未登录`)
-                profileUpdate({ _body: {profile_id, group_id: toggle_group_id } }).then(async resp => {
-                    if (resp.error.code === 0) {
-                        await tools.setTimeout(10000)
-                        profileBatchClose([profile_id]).then(resp => {
-                            console.info('profileBatchClose-success: ' + profile_id)
-                            resolve('profileBatchClose-success: ' + profile_id)
-                        }).catch(err => {
-                            console.info('profileBatchClose-failure: ' + profile_id)
-                            reject('profileBatchClose-failure: ' + profile_id)
-                        })
-                    }
+        try {
+            return new Promise(async (resolve, reject) => {
+                const options = {...profile_default_config, ..._options}
+                const { rules,
+                    url,
+                    profile_id,
+                    group_id,
+                    toggle_group_id } = options
+
+                // const pages = await browser.pages()
+                // page = pages[0]
+                // for(const index in pages) {
+                //     const p = pages[index]
+                //     await p.close()
+                // }
+                const page = await browser.newPage()
+                await page.setViewport( {
+                    width: 1200,
+                    height: 800,
+                    deviceScaleFactor: 3,
                 })
-            } else {
-                const oThis = this
-                for (let i = 0; i < rules.length; i++) {
-                    const rule = rules[i]
-                    if (rule.status === 'enable') {
-                        await this.done(async function(_resolve) {
-                            await oThis.pageOperate(page, rule)
-                            if ('ops' in rule && Array.isArray(rule.ops) && rule.ops.length > 0) {
-                                for(const ops_rule of rule.ops) {
-                                    await oThis.done(async function(_resolve) {
-                                        const filedData = await oThis.pageDataOperate(page, ops_rule)
-                                        data = {...data, ...filedData}
-                                        await _resolve(true)
-                                    }, 3000)
+                // @todo 失败的话，需要再尝试一次
+                await page.goto(url, { waitUntil: 'domcontentloaded' })
+                //登录失效，出现登录
+                const isVisibleLoginButton = await page.$('div[class="_6ltg"] a[class="_42ft _4jy0 _6lti _4jy6 _4jy2 selected _51sy"]')
+                console.info('isVisibleLoginButton: ', isVisibleLoginButton)
+                let data = {ixb_profile_id: profile_id}
+                if (isVisibleLoginButton) {
+                    console.info(`profile_id[${profile_id}]未登录`)
+                    profileUpdate({ _body: {profile_id, group_id: toggle_group_id } }).then(async resp => {
+                        if (resp.error.code === 0) {
+                            await tools.setTimeout(10000)
+                            profileBatchClose([profile_id]).then(resp => {
+                                console.info('profileBatchClose-success: ' + profile_id)
+                                reject('profileBatchClose-success: ' + profile_id)
+                            }).catch(err => {
+                                console.info('profileBatchClose-failure: ' + profile_id)
+                                reject('profileBatchClose-failure: ' + profile_id)
+                            })
+                        }
+                    })
+                } else {
+                    const oThis = this
+                    for (let i = 0; i < rules.length; i++) {
+                        const rule = rules[i]
+                        if (rule.status === 'enable') {
+                            await this.done(async function(_resolve) {
+                                await oThis.pageOperate(page, rule)
+                                if ('ops' in rule && Array.isArray(rule.ops) && rule.ops.length > 0) {
+                                    for(const ops_rule of rule.ops) {
+                                        await oThis.done(async function(_resolve) {
+                                            const filedData = await oThis.pageDataOperate(page, ops_rule)
+                                            data = {...data, ...filedData}
+                                            await _resolve(true)
+                                        }, 3000)
+                                    }
                                 }
-                            }
-                            await _resolve(true)
-                        })
+                                await _resolve(true)
+                            })
+                        }
+
                     }
-
+                    console.info(`[${profile_id}]-getAllFieldsData: `, data)
                 }
-                console.info(`[${profile_id}]-getAllFieldsData: `, data)
-            }
 
-            // @todo 写入indexedDB
-            // const db = await indexedDB.openDB(site_name)
-            // await indexedDB.addData(db, 'profile', data)
-            resolve(data)
-        })
+                // @todo 写入indexedDB
+                // const db = await indexedDB.openDB(site_name)
+                // await indexedDB.addData(db, 'profile', data)
+                resolve(data)
+            })
+        }catch(error) {
+            console.info('facebook-getProfile-error: ', error.code, error.message)
+            // @todo Error: net::ERR_SOCKS_CONNECTION_FAILED
+        }
+
     }
 }
