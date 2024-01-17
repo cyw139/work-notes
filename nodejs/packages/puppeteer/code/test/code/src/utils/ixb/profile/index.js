@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer-core');
 const {ixbRequest} = require('../ixbRequest');
+const {tools} = require("../../index");
 
 exports.profileOpen = async function profileOpen(callback, {
     _body = { },
@@ -12,10 +13,11 @@ exports.profileOpen = async function profileOpen(callback, {
         const body = {...{
                 "profile_id": 0, // 直连
                 "args": [
+                    "--disable-notifications",
                     "--disable-extension-welcome-page"
                 ],
                 "load_extensions": false,
-                "load_profile_info_page": false,
+                "load_profile_info_page": true,
                 "cookies_backup": false,
                 "cookie": ""
             }, ..._body}
@@ -27,7 +29,7 @@ exports.profileOpen = async function profileOpen(callback, {
             const browser = await puppeteer.connect({
                 browserWSEndpoint: response_body.data.ws
             });
-
+            await tools.setTimeout(10000)
             await callback(browser, { group_id, toggle_group_id, profile_id})
             await browser.close()
             resolve(true)

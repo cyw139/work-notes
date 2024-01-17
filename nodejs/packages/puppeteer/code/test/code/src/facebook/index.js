@@ -17,7 +17,7 @@ profileList({
         // if (item.profile_id > 492) {
         //     continue
         // }
-        if (![515].some(id => id === item.profile_id)) {
+        if (![486].some(id => id === item.profile_id)) {
             continue
         }
         const options = {

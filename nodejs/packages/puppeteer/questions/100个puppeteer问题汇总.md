@@ -27,6 +27,8 @@ const newBrowser = async () => {
     headless: false,
     devtools: false, // F12打开控制台
     args: [
+        // 参考：https://peter.sh/experiments/chromium-command-line-switches/
+        `--disable-notifications`, 
       `--disable-extensions-except=/Users/mac/project/dev/puppeteer/extend`, // 不屏蔽这个插件 mac
       // `--disable-extensions-except=C:/Users/Administrator/Desktop/rechargenew`, // 不屏蔽这个插件 window
       `--window-size=${width},${height}`, // 窗口大小
