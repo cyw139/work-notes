@@ -1,5 +1,2 @@
-const set6 = new Set()
-set6.add({})
-console.log(set6.size) // 1
-set6.add({})
-console.log(set6.size) // 2
+const set8 = new Set(['red', 'green', 'blue'])
+set8.forEach((value, key, item) => console.log(key + ': ' + value, item))
