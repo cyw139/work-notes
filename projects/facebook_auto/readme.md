@@ -28,3 +28,10 @@ pm.request.headers.add({
 key: "x-sec-token",
 value: "{{sec_token1}}"
 })
+
+## 1.4、node调试
+chrome://inspect
+
+## 2、问题汇总
+- 2024-1-23
+- [ ] php artisan make:migration ，如何自定义模板文件？ 
