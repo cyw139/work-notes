@@ -14,7 +14,7 @@ php artisan migrate --path=database/migrations/dcl
 php artisan migrate:rollback --path=database/migrations/dcl
 ## 1.2、创建账号
 php artisan tinker
-App\Models\FacebookAuto\UserModel::create(["name"=>"insight","real_name"=>"insight","password"=>bcrypt("123456")]);
+**App\Models\FacebookAuto\UserModel::create(["name"=>"insight","real_name"=>"insight","password"=>bcrypt("123456")]);**
 
 ## 1.3、postman 配置
 
